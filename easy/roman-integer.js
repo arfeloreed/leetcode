@@ -52,43 +52,25 @@ It is guaranteed that s is a valid roman numeral in the range [1, 3999].
  * @return {number}
  */
 var romanToInt = function (s) {
-  let integer = 0;
-  let count = 0;
-
-  function convert(str) {
-    switch (str) {
-      case "I":
-        return 1;
-      case "V":
-        return 5;
-      case "X":
-        return 10;
-      case "L":
-        return 50;
-      case "C":
-        return 100;
-      case "D":
-        return 500;
-      case "M":
-        return 1000;
-      default:
-        return 0;
-    }
+  let map = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+  };
+  const len = s.length;
+  let ans = 0;
+  for (let i = 0; i < len; i++) {
+    const current = map[s[i]];
+    const next = map[s[i + 1]];
+    if (current < next) ans -= current;
+    else ans += current;
   }
 
-  while (count < s.length) {
-    const current = convert(s[count]);
-    const next = convert(s[count + 1]);
-    if (current >= next) {
-      integer += current;
-      count++;
-    } else {
-      integer = integer + (next - current);
-      count += 2;
-    }
-  }
-
-  return integer;
+  return ans;
 };
 
 console.log(romanToInt("III")); // 3
