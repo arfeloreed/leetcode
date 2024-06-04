@@ -25,22 +25,29 @@ Constraints:
  */
 var longestConsecutive = function (nums) {
   if (nums.length === 0) return 0;
+  // track the max sequence length
+  let max = 0;
+  // convert nums array to set to remove duplicates
+  const numsSet = new Set(nums);
 
-  const newNums = [...new Set(nums)].sort((a, b) => a - b);
-  const len = newNums.length;
-  const map = [];
-  let count = 1;
-
-  for (let i = 0; i < len; i++) {
-    if (newNums[i] + 1 !== newNums[i + 1]) {
-      map.push(count);
-      count = 0;
+  for (const num of numsSet) {
+    // get the prev num of the current num and check if it exists in the set
+    const prev = num - 1;
+    // if prev doesn't exist, it means it is the start of the sequence
+    if (!numsSet.has(prev)) {
+      // initialize a length to track the length of the current sequence
+      let length = 1;
+      // using while loop add length to current num and check if it exists in the set
+      // if exists add length by 1
+      while (numsSet.has(num + length)) {
+        length++;
+      }
+      // set max to the max of length and max
+      max = Math.max(max, length);
     }
-    count++;
   }
-  if (map[map.length - 1] !== count) map.push(count);
 
-  return Math.max(...map);
+  return max;
 };
 
 console.log(longestConsecutive([])); // 0
