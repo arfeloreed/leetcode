@@ -1,39 +1,33 @@
-/**
- * @param {number[]} heights
- * @return {number}
- */
-var largestRectangleArea = function (heights) {
-  const len = heights.length;
-  const stack = [];
-  let max = 0;
+function encode(strs) {
+  let res = "";
+  for (const str of strs) {
+    const len = str.length;
+    res += `${len}#${str}`;
+  }
 
-  for (let i = 0; i < len; i++) {
-    let start = i;
-    const height = heights[i];
-    // base case for setting the max area
-    while (stack.length && height < stack.at(-1).height) {
-      const { height: popHeight, start: popStart } = stack.pop();
-      const area = popHeight * (i - popStart);
-      max = Math.max(max, area);
-      start = popStart;
+  return res;
+}
+
+function decode(str) {
+  console.log(str);
+  const res = [];
+  const len = str.length;
+  let i = 0;
+  let j = i + 1;
+
+  while (i < len) {
+    if (str[j] === "#") {
+      const charLen = parseInt(str[i]);
+      res.push(str.slice(j + 1, j + charLen + 1));
+      i = j + charLen + 1;
+      j = i + 1;
     }
-
-    stack.push({
-      height,
-      start,
-    });
   }
 
-  const stackLen = stack.length;
-  for (let i = 0; i < stackLen; i++) {
-    const height = stack[i].height;
-    const start = stack[i].start;
-    const area = height * (len - start);
-    max = Math.max(max, area);
-  }
+  return res;
+}
 
-  return max;
-};
-
-console.log(largestRectangleArea([2, 1, 5, 6, 2, 3])); // 10
-console.log(largestRectangleArea([2])); // 2
+// const s = encode(["lint", "code", "love", "you"]);
+// const s = encode(["we", "say", ":", "yes"]);
+const s = encode(["hello", "wo#rld", "!"]);
+console.log(decode(s));
