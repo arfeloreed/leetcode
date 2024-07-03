@@ -1,16 +1,4 @@
 // 271. Encode and Decode Strings
-
-// function encode(strs) {
-//   const str = strs.join(";#");
-
-//   return str;
-// }
-// function decode(str) {
-//   const strs = [...str.split(";#")];
-
-//   return strs;
-// }
-
 /*
 function encode(strs) {
   let str = "";
@@ -37,11 +25,8 @@ function decode(str) {
 
   return strs;
 }
-
-console.log(encode(["hello", "wo#rld", "!"]));
-console.log(decode(encode(["hello", "wo#rld", "!"])));
 */
-
+/*
 function encode(strs) {
   let res = "";
   for (const str of strs) {
@@ -70,8 +55,32 @@ function decode(str) {
 
   return res;
 }
-
-// const s = encode(["lint", "code", "love", "you"]);
-// const s = encode(["we", "say", ":", "yes"]);
-const s = encode(["hello", "wo#rld", "!"]);
+*/
+function encode(strs) {
+  let str = "";
+  for (const i of strs) {
+    str += `${i.length}#@${i}`;
+  }
+  return str;
+}
+function decode(str) {
+  const res = [];
+  let i = 0,
+    j = i + 1,
+    len = str.length;
+  while (i < len) {
+    const delimiter = str.slice(j, j + 2);
+    if (delimiter === "#@") {
+      j += 2;
+      const wordLen = parseInt(str[i]);
+      res.push(str.slice(j, j + wordLen));
+      i = j + wordLen;
+      j = i + 1;
+    }
+  }
+  return res;
+}
+let s = encode(["lint", "code", "love", "you"]);
+let t = encode(["we", "say", ":", "yes"]);
 console.log(decode(s));
+console.log(decode(t));
