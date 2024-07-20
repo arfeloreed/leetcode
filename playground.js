@@ -1,15 +1,26 @@
-function ordinal(num) {
-  const str = ["th", "st", "nd", "rd"];
-  const i = num % 100;
-  const j = (i - 20) % 10;
-  return num + (str[j] || str[i] || str[0]);
-}
-function rndNums(len) {
-  res = [];
+/**
+ * @param {number[]} heights
+ * @return {number}
+ */
+var largestRectangleArea = function (heights) {
+  const len = heights.length;
+  if (len === 1) return heights[0] * len;
+  let max = 0;
+  const stack = [];
   for (let i = 0; i < len; i++) {
-    const num = Math.ceil(Math.random() * 100);
-    res.push(ordinal(num));
+    const currHeight = heights[i];
+    let idx = i;
+    while (stack.length && currHeight < stack.at(-1).height) {
+      const { height, strtIdx } = stack.pop();
+      max = Math.max(max, height * (i - strtIdx));
+      idx = strtIdx;
+    }
+    stack.push({ height: currHeight, strtIdx: idx });
   }
-  return res;
-}
-console.log(rndNums(10));
+  for (const i of stack) {
+    const { height, strtIdx } = i;
+    max = Math.max(max, height * (len - strtIdx));
+  }
+  return max;
+};
+console.log(largestRectangleArea([2, 1, 5, 6, 2, 3]));
