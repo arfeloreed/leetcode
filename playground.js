@@ -1,26 +1,20 @@
 /**
- * @param {number[]} heights
- * @return {number}
+ * 1. O(b)
+ * 2. O(b)
+ * 3. O(1)
+ * 4. O(a/b)
+ * 5. O(log n)
+ * 6. O(/n) : squareroot of n
+ * 7. O(n)
+ * 8. O(n)
+ * 9. O()
+ * 10. O()
  */
-var largestRectangleArea = function (heights) {
-  const len = heights.length;
-  if (len === 1) return heights[0] * len;
-  let max = 0;
-  const stack = [];
-  for (let i = 0; i < len; i++) {
-    const currHeight = heights[i];
-    let idx = i;
-    while (stack.length && currHeight < stack.at(-1).height) {
-      const { height, strtIdx } = stack.pop();
-      max = Math.max(max, height * (i - strtIdx));
-      idx = strtIdx;
-    }
-    stack.push({ height: currHeight, strtIdx: idx });
+
+function sqrt(n) {
+  for (let i = 1; i * i <= n; i++) {
+    if (i * i === n) return i;
   }
-  for (const i of stack) {
-    const { height, strtIdx } = i;
-    max = Math.max(max, height * (len - strtIdx));
-  }
-  return max;
-};
-console.log(largestRectangleArea([2, 1, 5, 6, 2, 3]));
+  return -1;
+}
+console.log(sqrt(1000));
