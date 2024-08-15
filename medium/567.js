@@ -5,35 +5,36 @@
  */
 // time: O(n1+26*(n2-n1)) space: O(1) for 26 keys
 var checkInclusion = function (s1, s2) {
-  if (s1.length > s2.length) return false;
+  const s1Len = s1.length,
+    s2Len = s2.length;
+  if (s1Len > s2Len) return false;
 
-  const createFrequencyMap = (str, length) => {
+  function makeMap(str, len) {
     const map = new Array(26).fill(0);
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < len; i++) {
       map[str.charCodeAt(i) - "a".charCodeAt(0)] += 1;
     }
     return map;
-  };
+  }
 
-  const matches = (map1, map2) => {
+  s1map = makeMap(s1, s1Len);
+  s2map = makeMap(s2, s1Len);
+
+  function isMatch(map1, map2) {
     for (let i = 0; i < 26; i++) {
       if (map1[i] !== map2[i]) return false;
     }
     return true;
-  };
-
-  const s1map = createFrequencyMap(s1, s1.length);
-  const s2map = createFrequencyMap(s2, s1.length);
-
-  for (let i = 0; i <= s2.length - s1.length; i++) {
-    if (matches(s1map, s2map)) return true;
-
-    if (i + s1.length < s2.length) {
-      s2map[s2.charCodeAt(i + s1.length) - "a".charCodeAt(0)] += 1;
-      s2map[s2.charCodeAt(i) - "a".charCodeAt(0)] -= 1;
-    }
   }
-  return matches(s1map, s2map);
+
+  for (let i = 0; i < s2Len - s1Len; i++) {
+    if (isMatch(s1map, s2map)) return true;
+    // move the window for s2map
+    s2map[s2.charCodeAt(i + s1Len) - "a".charCodeAt(0)] += 1;
+    s2map[s2.charCodeAt(i) - "a".charCodeAt(0)] -= 1;
+  }
+
+  return isMatch(s1map, s2map);
 };
 
 /**
