@@ -9,6 +9,7 @@ var checkInclusion = function (s1, s2) {
     s2Len = s2.length;
   if (s1Len > s2Len) return false;
 
+  // create a frequency map
   function makeMap(str, len) {
     const map = new Array(26).fill(0);
     for (let i = 0; i < len; i++) {
@@ -30,8 +31,8 @@ var checkInclusion = function (s1, s2) {
   for (let i = 0; i < s2Len - s1Len; i++) {
     if (isMatch(s1map, s2map)) return true;
     // move the window for s2map
-    s2map[s2.charCodeAt(i + s1Len) - "a".charCodeAt(0)] += 1;
-    s2map[s2.charCodeAt(i) - "a".charCodeAt(0)] -= 1;
+    s2map[s2.charCodeAt(i + s1Len) - "a".charCodeAt(0)] += 1; // incoming into window
+    s2map[s2.charCodeAt(i) - "a".charCodeAt(0)] -= 1; // outgoing from window
   }
 
   return isMatch(s1map, s2map);

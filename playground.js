@@ -1,47 +1,28 @@
 /**
- * @param {string} s
- * @param {string} t
- * @return {string}
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
  */
-var minWindow = function (s, t) {
-  if (t.length > s.length) return "";
-  const slen = s.length;
-  const tmap = {};
-  const smap = {};
-  let l = 0,
-    need = 0,
-    have = 0,
-    char,
-    res = [], // will hold the left and right pointer
-    resLen = Infinity;
-  // update tmap
-  for (const i of t) {
-    tmap[i] = 1 + (tmap[i] || 0);
-  }
-  need = Object.keys(tmap).length;
+var maxSlidingWindow = function (nums, k) {
+  const len = nums.length;
+  const res = [];
+  const deq = [];
+  let l = 0;
 
-  // update smap
-  for (let r = 0; r < slen; r++) {
-    char = s[r];
-    smap[char] = 1 + (smap[char] || 0);
-    // update the have for the current window
-    if (char in tmap && smap[char] === tmap[char]) have++;
-    // update res and resLen
-    while (need === have) {
-      // r-l+1 is current window length
-      if (r - l + 1 < resLen) {
-        res = [l, r];
-        resLen = r - l + 1;
-      }
-      // update current window
-      smap[s[l]] -= 1;
-      // decrease have if necessary chars are no longer in the current window
-      if (s[l] in tmap && smap[s[l]] < tmap[s[l]]) have--;
+  for (let r = 0; r < len; r++) {
+    while (deq.length > 0 && nums[r] >= nums[deq[deq.length - 1]]) {
+      deq.pop();
+    }
+    deq.push(r);
+
+    if (l > deq[0]) deq.shift();
+
+    if (r + 1 >= k) {
+      res.push(nums[deq[0]]);
       l++;
     }
   }
-  // get the pointers
-  const [left, right] = res;
-  return resLen !== Infinity ? s.slice(left, right + 1) : "";
+
+  return res;
 };
-console.log(minWindow("ADOBECODEBANC", "ABC"));
+console.log(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3));

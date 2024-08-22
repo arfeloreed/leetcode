@@ -1,3 +1,4 @@
+// time: O(n) | space: O(n + m)
 /**
  * @param {string} s
  * @param {string} t
@@ -8,17 +9,17 @@ var minWindow = function (s, t) {
   const slen = s.length;
   const tmap = {};
   const smap = {};
-  let l = 0,
-    need = 0,
-    have = 0,
-    char,
-    res = [], // will hold the left and right pointer
-    resLen = Infinity;
+
   // update tmap
   for (const i of t) {
     tmap[i] = 1 + (tmap[i] || 0);
   }
-  need = Object.keys(tmap).length;
+
+  let l = (have = 0),
+    need = Object.keys(tmap).length,
+    char,
+    res = [-1, -1], // will hold the left and right pointer
+    resLen = Infinity;
 
   // update smap
   for (let r = 0; r < slen; r++) {

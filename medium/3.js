@@ -4,8 +4,7 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function (s) {
-  let max = 0,
-    l = 0;
+  let max = (l = 0);
   const charSet = new Set();
   for (const r of s) {
     while (charSet.has(r)) {
